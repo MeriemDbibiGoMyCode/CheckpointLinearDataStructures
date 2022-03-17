@@ -1,0 +1,110 @@
+// Solution 1 - Somme des éléments égaux
+ALGORITHM sommeEgaux
+VAR
+    set1:ARRAY_INTEGER :=[3,1,7,9];
+    set2:ARRAY_INTEGER :=[2,4,1,9,3];
+    i,j,sumEgaux = integer :=0;
+BEGIN
+    FOR i FROM 0 TO set1.length-1  DO
+       FOR j FROM 0 TO set2.length-1  DO
+       IF (set1[i]=set2[j]) THEN
+           sumEgaux:=sumEgaux+set1[i]*2;
+       END_IF
+       END_FOR
+    END_FOR
+    write("la somme des elements egaux est : ",sumEgaux);
+END
+// Solution 2 - Somme des éléments distincts
+ALGORITHM sommeDistincts
+VAR
+        set1:ARRAY_INTEGER :=[3,1,7,9];
+        set2:ARRAY_INTEGER :=[2,4,1,9,3];
+        i,j,sumDiff = integer :=0;
+        egaux :BOOLEAN :=false;
+BEGIN
+FOR i FROM 0 TO set1.length-1 DO
+    FOR j FROM 0 TO set2.length-1  DO
+       IF (set1[i]=set2[j]) THEN
+           egaux =true;
+           break;
+       END_IF
+    END_FOR
+IF (egaux = false) THEN
+    sumDiff := sumDiff+set1[i];
+END_IF
+END_FOR
+
+FOR i FROM 0 TO set2.length-1  DO
+    FOR j FROM 0 TO set1.length-1  DO
+       if(set2[i]=set1[j])THEN
+       egaux:= true
+       break;
+       end if
+    END_FOR
+   
+ IF(egaux=false)THEN
+    sumDiff := sumDiff+set2[i];
+ END_IF
+END_FOR
+write("la somme des elements distincts: ",sumDiff)
+END
+// Solution 1 - Somme des éléments égaux avec HashTable
+ALGORITHM sommeEgauxHashtable
+VAR
+    set1 : ARRAY_OF INTEGER[] := [3,1,7,9]
+    set2: ARRAY_OF INTEGER[] := [2,4,1,9,3]
+    i,j,sommeEgaux = integer :=0
+    hashTab: HASH-TABLe <INTEGER,INTEGER>
+BEGIN
+// Remplissage du Hashtable
+    FOR i FROM 0 TO set1.length-1  DO
+        hashTab.insert(set1[i],1);
+    END_FOR
+    FOR j FROM 0 TO set2.length-1  DO
+        IF (hashTab.lookup(set2[j])=true) THEN
+             hashTab.insert(set2[j],2);
+        ELSE 
+           hashTab.insert(set2[j],1);    
+        END_IF 
+    END_FOR
+    // Pour la somme des elements egaux
+    FOR i FROM 0 TO set1.length  DO
+    IF (hashTab.get(set1[i])=2) THEN
+        sommeEgaux:=sommeEgaux+set1[i];
+    END_IF 
+    END_FOR
+    write("la somme des elements egaux est: ",sommeEgaux)
+END
+// Solution 2 - Somme des éléments distincts avec HashTable
+ALGORITHM sommeDistinctsHashtable
+VAR
+    set1 : ARRAY_OF INTEGER[] := [3,1,7,9]
+    set2: ARRAY_OF INTEGER[] := [2,4,1,9,3]
+    i,j,sommeDiff = integer :=0
+    hashTab: HASH-TABLe <INTEGER,INTEGER>
+BEGIN
+// Remplissage du Hashtable
+     FOR i FROM 0 TO set1.length-1  DO
+        hashTab.insert(set1[i],1);
+    END_FOR
+    FOR j FROM 0 TO set2.length-1  DO
+        IF (hashTab.lookup(set2[j])=true) THEN
+             hashTab.insert(set2[j],2);
+        ELSE 
+           hashTab.insert(set2[j],1);    
+        END_IF 
+    END_FOR
+      // Pour la somme des elements distincts
+      FOR i FROM 0 TO set1.length-1  DO
+          IF (hashTab.get(set1[i])=1) THEN
+              sommeDiff:=sommeDiff+set1[i];
+          END_IF
+      END_FOR
+      FOR j FROM 0 TO set2.length-1  DO
+         IF (hashTab.get(set2[j])=1) THEN
+             sommeDiff:=sommeDiff+set2[j];
+         END_IF
+      END_FOR
+      write("la somme des elements distincts est: ",sommeDiff);
+END
+
